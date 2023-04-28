@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Enums\LanguageEnum;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use RuntimeException;
 use Tests\TestCase;
 
 class DigitToWordAPITest extends TestCase
@@ -157,17 +158,17 @@ class DigitToWordAPITest extends TestCase
         $response->assertJson(['data' => 'Negative ten']);
     }
 
-    public function test_canChangeDigitToWord_whenNegative_2147483647(): void
+    public function test_canChangeDigitToWord_whenNegative_2147483648(): void
     {
         // 1. Given
-        $digit = -2147483647;
+        $digit = -2147483648;
 
         // 2. When
         $response = $this->get($this->getTestUrlWithDigit($digit));
 
         // 3. Then
         $response->assertStatus(200);
-        $response->assertJson(['data' => 'Negative two billion one hundred forty seven million four hundred eighty three thousand six hundred and forty seven']);
+        $response->assertJson(['data' => 'Negative two billion one hundred forty seven million four hundred eighty three thousand six hundred and forty eight']);
     }
 
     /**
@@ -220,8 +221,8 @@ class DigitToWordAPITest extends TestCase
 
         // 3. Then
         $response->assertStatus(400);
-        $response->assertJson(['error' => 'RuntimeException']);
-        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit]);
+        $response->assertJson(['error' => RuntimeException::class]);
+        $response->assertJson(['message' => __('messages.invalid_32bit_integer', ['attribute' => $digit])]);
     }
 
     /**
@@ -241,8 +242,8 @@ class DigitToWordAPITest extends TestCase
 
         // 3. Then
         $response->assertStatus(400);
-        $response->assertJson(['error' => 'RuntimeException']);
-        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit]);
+        $response->assertJson(['error' => RuntimeException::class]);
+        $response->assertJson(['message' => __('messages.invalid_32bit_integer', ['attribute' => $digit])]);
     }
 
     public function test_throwInvalidException_whenOver32bitInteger_negative_2147483649(): void
@@ -255,8 +256,8 @@ class DigitToWordAPITest extends TestCase
 
         // 3. Then
         $response->assertStatus(400);
-        $response->assertJson(['error' => 'RuntimeException']);
-        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit]);
+        $response->assertJson(['error' => RuntimeException::class]);
+        $response->assertJson(['message' => __('messages.invalid_32bit_integer', ['attribute' => $digit])]);
     }
 
     /**
