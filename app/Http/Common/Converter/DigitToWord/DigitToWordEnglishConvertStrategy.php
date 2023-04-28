@@ -28,7 +28,7 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
 
         $resultWord = $this->getCombinedWord($negativeWord, $numberWord);
 
-        return $this->changeStyleAfterConvert($resultWord);
+        return $this->cleanUpStyleAfterConvert($resultWord);
     }
 
     private function getNegativeWord(string $validatedDigitString): string
@@ -60,9 +60,9 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
 
     private function getCombinedWord(string $former, string $next): string
     {
-        if (strlen($former) >= 1 && strlen($next) >= 1 ) {
+        if ($this->hasBothFormerAndNextValue($former, $next) ) {
             $combinedString = $former.$this->delimiter.$next;
-        } elseif (strlen($former) >= 1) {
+        } elseif ($this->hasOnlyFormerValue($former)) {
             $combinedString = $former;
         } else {
             $combinedString = $next;
@@ -71,6 +71,13 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
        return $combinedString;
     }
 
+    /**
+     * Recursive function for combining Number Word
+     *
+     * @param int $digit
+     * @param int $index
+     * @return string
+     */
     private function changeNumberToWord(int $digit, int $index): string
     {
         $numberUnit = $this->numberUnits[$index];
@@ -159,9 +166,19 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
         return $hasHundredWord;
     }
 
-    private function changeStyleAfterConvert(string $resultWord): string
+    private function cleanUpStyleAfterConvert(string $resultWord): string
     {
         $resultWord = $this->addAndWordToLastHundredPart($resultWord);
         return CommonFunction::getInstance()->changeFirstCharToUpperCase($resultWord);
+    }
+
+    private function hasBothFormerAndNextValue(string $former, string $next): bool
+    {
+        return strlen($former) >= 1 && strlen($next) >= 1;
+    }
+
+    private function hasOnlyFormerValue(string $former): bool
+    {
+        return strlen($former) >= 1;
     }
 }

@@ -69,7 +69,7 @@ class DigitToWordConverter
     private function validate(int|string $digit): void
     {
         if ($this->isNotValidateDigit($digit)) {
-            throw new RuntimeException('Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit);
+            throw new RuntimeException(__('messages.invalid_32bit_integer', ['attribute' => $digit]));
         }
     }
 
@@ -117,7 +117,7 @@ class DigitToWordConverter
         return $digit >= -2147483648 && $digit <= 2147483647;
     }
 
-    private function validateNegativeZero(int|string $digit): string
+    private function validateNegativeZero(int|string $digit): int|string
     {
         $result = $digit;
 

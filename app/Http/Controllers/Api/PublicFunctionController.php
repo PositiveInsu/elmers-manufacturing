@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Common\Converter\DigitToWord\DigitToWordConverter;
+use App\Http\Common\Converter\HexadecimalToProperty\HexadecimalToPropertyConverter;
 use App\Http\Services\RestfulApiService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -29,6 +30,20 @@ readonly class PublicFunctionController
             $dataBag = $this->restfulApiService->getErrorBag($e);
             $httpStatus = 400;
         }
+        return $this->response->json($dataBag, $httpStatus);
+    }
+
+    public function hexadecimalToProperty(string $hexadecimal): JsonResponse
+    {
+        try {
+            $result = HexadecimalToPropertyConverter::getInstance()->convert($hexadecimal);
+            $dataBag = $this->restfulApiService->getDataBag(json_encode($result));
+            $httpStatus = 200;
+        } catch (RuntimeException $e) {
+            $dataBag = $this->restfulApiService->getErrorBag($e);
+            $httpStatus = 400;
+        }
+
         return $this->response->json($dataBag, $httpStatus);
     }
 }

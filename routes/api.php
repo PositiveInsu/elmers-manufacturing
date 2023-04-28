@@ -18,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'api'], function(){
     Route::get('/public-function/digit-to-word/{locale}/{digit}', [PublicFunctionController::class, 'digitToWord']);
-    Route::get('/public-function/hexdecimal-to-property/{hexadecimal}', [PublicFunctionController::class, 'hexadecimalToProperty']);
+    Route::get('/public-function/hexadecimal-to-property/{hexadecimal}', [PublicFunctionController::class, 'hexadecimalToProperty']);
 });
