@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\PublicFunctionController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'api'], function(){
+    Route::get('/public-function/digit-to-word/{locale}/{digit}', [PublicFunctionController::class, 'digitToWord']);
 });
