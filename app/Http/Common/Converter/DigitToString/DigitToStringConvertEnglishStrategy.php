@@ -2,10 +2,17 @@
 
 namespace App\Http\Common\Converter\DigitToString;
 
+use App\Http\Common\CommonFunction;
 use Illuminate\Support\Facades\App;
 
 class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertStrategy
 {
+    private string $delimiter = ' ';
+    /**
+     * @var int[]
+     */
+    private array $numberUnits = [10, 100, 1000, 1000000, 1000000000];
+
     protected function setLocale(): void
     {
         App::setLocale('en');
@@ -13,13 +20,16 @@ class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertSt
 
     public function convert(string $validatedDigitString): string
     {
-        $negativeString = $this->getNegativeString($validatedDigitString);
-        $numberString = $this->getNumberString($validatedDigitString);
+        $negativeWord = $this->getNegativeWord($validatedDigitString);
+        $onlyNumberString = $this->getRemovedNavigateString($validatedDigitString);
+        $numberWord = $this->getNumberWord($onlyNumberString);
+        $resultNumberWord = $this->getCombinedWord($negativeWord, $numberWord);
+        $resultNumberWord = $this->addAndWordToLastHundredPart($resultNumberWord);
 
-        return $negativeString.$numberString;
+        return CommonFunction::getInstance()->changeFirstCharToUpperCase($resultNumberWord);
     }
 
-    private function getNegativeString(string $validatedDigitString): string
+    private function getNegativeWord(string $validatedDigitString): string
     {
         $negativeString = '';
 
@@ -30,10 +40,120 @@ class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertSt
         return $negativeString;
     }
 
-    private function getNumberString(string $validatedDigitString): string
+    private function getNumberWord(string $validatedDigitString): string
     {
-        $digitStringWithoutNegative = str_replace('-', '', $validatedDigitString);
-        $digitStringArray = str_split($digitStringWithoutNegative);
-        return '';
+        $digit = intval($validatedDigitString);
+        $numberUnitArrayLength = count($this->numberUnits) - 1;
+        return $this->changeNumberToWord($digit, $numberUnitArrayLength);
+    }
+
+    private function getRemovedNavigateString(string $validatedDigitString): string
+    {
+        if (str_contains($validatedDigitString, '-')) {
+            $validatedDigitString = str_replace('-', '', $validatedDigitString);
+        }
+
+        return $validatedDigitString;
+    }
+
+    private function getCombinedWord(string $former, string $next): string
+    {
+        if (strlen($former) >= 1 && strlen($next) >= 1 ) {
+            $combinedString = $former.$this->delimiter.$next;
+        } elseif (strlen($former) >= 1) {
+            $combinedString = $former;
+        } else {
+            $combinedString = $next;
+        }
+
+       return $combinedString;
+    }
+
+    private function changeNumberToWord(int $digit, int $index): string
+    {
+        $numberUnit = $this->numberUnits[$index];
+
+        $quotient = intval($digit / $numberUnit); // quotient can be float like 1.1, but we only need the integer value
+        $remainder = $digit % $numberUnit;
+
+        if ($numberUnit === 10) {
+            $resultString = $this->getTensPlaceString($digit, $quotient, $remainder);
+        } else {
+            $quotientString = $this->getQuotientString($quotient, $numberUnit);
+            $remainderString = $this->changeNumberToWord($remainder, $index-1);
+            $resultString = $this->getCombinedWord($quotientString, $remainderString);
+        }
+
+
+        return $resultString;
+    }
+
+    private function getQuotientString(int $quotient, int $numberUnit): string
+    {
+        $quotientString = '';
+
+        if ($quotient > 0) {
+            /**
+             * Quotient can be over 20.
+             */
+            $quotientString = $this->changeNumberToWord($quotient, 1);
+            /**
+             * This method will return one of these; 'hundred', 'thousand', 'million', 'billion'
+             */
+            $numberUnitString = $this->getStringFromLabel($numberUnit);
+            $quotientString = $this->getCombinedWord($quotientString, $numberUnitString);
+        }
+
+        return $quotientString;
+    }
+
+    private function getStringFromLabel(int $number): string
+    {
+        return __('digitstrings.'.$number);
+    }
+
+    private function getTensPlaceString(int $digit, int $quotient, int $remainder): string
+    {
+        if ($digit < 20) {
+            /**
+             * When under 20, the tens place digit is special.
+             * For example
+             * 'eleven', 'twelve' ...
+             */
+            $resultString = $this->getStringFromLabel($digit);
+        } else {
+            /**
+             * When over 20, the tens place quotient digit is also special
+             * For example
+             * 'twenty', 'thirty', 'forty' ...
+             */
+            $quotientString = $this->getStringFromLabel($quotient.'0');
+            $remainderString = $this->getStringFromLabel($remainder);
+            $resultString = $this->getCombinedWord($quotientString, $remainderString);
+        }
+
+        return $resultString;
+    }
+
+    private function addAndWordToLastHundredPart(string $resultNumberWord): string
+    {
+        $index = strrpos($resultNumberWord, 'hundred', -1);
+
+        if ($this->hasHundredWord($index)) {
+            $resultNumberWord = substr_replace($resultNumberWord, 'hundred and', $index, 7);
+        }
+
+        return $resultNumberWord;
+    }
+
+    private function hasHundredWord(false|int $index): bool
+    {
+        $hasHundredWord = false;
+
+        if (CommonFunction::getInstance()->isIntegerType($index)) {
+            $hasHundredWord = true;
+        }
+
+        return $hasHundredWord;
     }
 }

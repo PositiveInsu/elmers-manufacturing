@@ -27,7 +27,7 @@ class DigitToStringAPITest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_canChangeDigitToString_whenOneDigit(): void
+    public function test_canChangeDigitToString_when0(): void
     {
         // 1. Given
         $digit = 0;
@@ -37,31 +37,85 @@ class DigitToStringAPITest extends TestCase
 
         // 3. Then
         $response->assertStatus(200);
-        $response->assertJson(['data' => 'zero']);
+        $response->assertJson(['data' => 'Zero']);
     }
 
-    public function test_canChangeDigitToString_whenTwoDigit(): void
+    public function test_canChangeDigitToString_when13(): void
     {
         // 1. Given
         $digit = 13;
 
         // 2. When
-        $result = '';
+        $response = $this->get($this->getTestUrlWithDigit($digit));
 
         // 3. Then
-        $this->assertEquals('Thirteen', $result);
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Thirteen']);
     }
 
-    public function test_canChangeDigitToString_whenMultipleDigit(): void
+    public function test_canChangeDigitToString_when85(): void
     {
         // 1. Given
-        $digitList = [];
+        $digit = 85;
 
         // 2. When
-        $result = [];
+        $response = $this->get($this->getTestUrlWithDigit($digit));
 
         // 3. Then
-        $this->assertEquals('multiple digit', []);
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Eighty five']);
+    }
+
+    public function test_canChangeDigitToString_when237(): void
+    {
+        // 1. Given
+        $digit = 237;
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Two hundred and thirty seven']);
+    }
+
+    public function test_canChangeDigitToString_when5237(): void
+    {
+        // 1. Given
+        $digit = 5237;
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Five thousand two hundred and thirty seven']);
+    }
+
+    public function test_canChangeDigitToString_when125237(): void
+    {
+        // 1. Given
+        $digit = 125237;
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'One hundred twenty five thousand two hundred and thirty seven']);
+    }
+
+    public function test_canChangeDigitToString_when2147483647(): void
+    {
+        // 1. Given
+        $digit = 2147483647;
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Two billion one hundred forty seven million four hundred eighty three thousand six hundred and forty seven']);
     }
 
     public function test_canChangeDigitToString_whenNegativeDigit(): void
@@ -70,10 +124,11 @@ class DigitToStringAPITest extends TestCase
         $digit = '-10';
 
         // 2. When
-        $result = '';
+        $response = $this->get($this->getTestUrlWithDigit($digit));
 
         // 3. Then
-        $this->assertEquals('Negative ten', $result);
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Negative ten']);
     }
 
     /**
