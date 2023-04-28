@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\PublicFunctionController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'api'], function(){
-    Route::get('/public-function/digit-to-string/{digit}', [PublicFunctionController::class, 'digitToString']);
+    Route::get('/public-function/digit-to-string/{locale}/{digit}', [PublicFunctionController::class, 'digitToString']);
 });

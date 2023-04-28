@@ -13,12 +13,12 @@ class DigitToStringAPITest extends TestCase
     /**
      * DigitToString Function RESTful API url
      */
-    const URL_API_FUNCTION_DIGIT_TO_STRING = '/api/public-function/digit-to-string/';
+    const URL_API_FUNCTION_DIGIT_TO_STRING = '/api/public-function/digit-to-string/en/';
 
     public function test_canCallAPI(): void
     {
         // 1. Given
-        $digit = 1;
+        $digit = 0;
 
         // 2. When
         $response = $this->get($this->getTestUrlWithDigit($digit));

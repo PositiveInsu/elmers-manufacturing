@@ -2,9 +2,16 @@
 
 namespace App\Http\Common\Converter\DigitToString;
 
-class DigitToStringConvertKoreanStrategy implements DigitToStringConvertStrategyInterface
+use Illuminate\Support\Facades\App;
+
+class DigitToStringConvertKoreanStrategy extends AbstractDigitToStringConvertStrategy
 {
-    public function convert(int|string $validatedDigit): string
+    protected function setLocale(): void
+    {
+        App::setLocale('kor');
+    }
+
+    public function convert(string $validatedDigitString): string
     {
         return 'Have to implement!';
     }

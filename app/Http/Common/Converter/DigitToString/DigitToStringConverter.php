@@ -19,7 +19,7 @@ use RuntimeException;
 class DigitToStringConverter
 {
     /**
-     * Only accept 1 Hyphen(may, or may not) and 1-10 digit number
+     * Only accept 1 Hyphen(may, or may not) and 1-10 digit number string
      */
     const REGEX_DIGIT_AND_NEGATIVE = '/^(-{0,1})(\d{1,10})$/';
     private digitToStringConvertStrategyInterface $digitToStringConvertStrategy;
@@ -46,7 +46,7 @@ class DigitToStringConverter
     public function convert(string|int $digit): string
     {
         $this->validate($digit);
-        return $this->digitToStringConvertStrategy->convert($digit);
+        return $this->digitToStringConvertStrategy->convert(strval($digit));
     }
 
     private function validate(int|string $digit): void
