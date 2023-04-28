@@ -20,9 +20,10 @@ This API also should change the Word not only English but also the other languag
 
 ### - 32 bit Integer in PHP
 
-In the PHP 32-bit system, Maximum value is **2147483647** and Minimum value is **-2147483647**
+In the PHP 32-bit system, Maximum value is **2147483647** and Minimum value is **-2147483648**
 
-please look at https://www.php.net/manual/en/language.types.integer.php
+please look at [reference](https://www.php.net/manual/en/reserved.constants.php#:~:text=PHP_INT_MAX)
+
 
 So in the question there is the **2147483648**, but I tested **2147483647** which is maximum value because of above reason.
 
@@ -69,7 +70,7 @@ protected function setLocale(): void
 
 Main business logic have to be placed in convert() method. 
 
-The convert method will pass the Number String argument like '123', '-123', '0'.
+The convert method will pass the $validateDigitString argument like '123', '-123', '0'.
 
 The passed argument is validated in the previous logic, so **you don't need to concern about wrong argument.** 
 
@@ -83,8 +84,7 @@ public function convert(string $validatedDigitString): string
 }
 ```
 
-
-You can see the DigitToWordEnglishConvertStrategy class for example.
+> You can see the DigitToWordEnglishConvertStrategy.php class for example.
 
 
 ## Part 2 

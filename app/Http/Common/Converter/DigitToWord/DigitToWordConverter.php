@@ -10,8 +10,8 @@ use RuntimeException;
  * Help converting Number to Word like '10' to 'Ten'
  * It can also convert negative word like '-10' to 'Negative Ten'
  *
- * In the PHP 32bit system, Maximum value is 2147483647 and Minimum value is -2147483647
- * please look at https://www.php.net/manual/en/language.types.integer.php
+ * In the PHP 32bit system, Maximum value is 2147483647 and Minimum value is -2147483648
+ * please look at https://www.php.net/manual/en/reserved.constants.php#:~:text=PHP_INT_MAX
  * If over that number then PHP consider that number is a float(double)
  * So in this class only consider 32-bit integer number
  *
@@ -69,7 +69,7 @@ class DigitToWordConverter
     private function validate(int|string $digit): void
     {
         if ($this->isNotValidateDigit($digit)) {
-            throw new RuntimeException('Number is invalid. Number has to be -2147483647 ~ 2147483647. Given number: '.$digit);
+            throw new RuntimeException('Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit);
         }
     }
 
@@ -114,7 +114,7 @@ class DigitToWordConverter
 
     private function is32BitInteger(int $digit): bool
     {
-        return $digit >= -2147483647 && $digit <= 2147483647;
+        return $digit >= -2147483648 && $digit <= 2147483647;
     }
 
     private function validateNegativeZero(int|string $digit): string

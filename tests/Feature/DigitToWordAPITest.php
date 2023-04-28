@@ -221,14 +221,14 @@ class DigitToWordAPITest extends TestCase
         // 3. Then
         $response->assertStatus(400);
         $response->assertJson(['error' => 'RuntimeException']);
-        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483647 ~ 2147483647. Given number: '.$digit]);
+        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit]);
     }
 
     /**
-     * In the PHP 32bit system, Maximum value is 2147483647 and Minimum value is -2147483647
+     * In the PHP 32bit system, Maximum value is 2147483647 and Minimum value is -2147483648
      * please look at https://www.php.net/manual/en/language.types.integer.php
      * If over that number then PHP consider that number is a float(double)
-     * So DigitToWord Function only get number between -2147483647 and 2147483647
+     * So DigitToWord Function only get number between -2147483648 and 2147483647
      * When invalid 32bit integer is passed, it will return exception messages.
      */
     public function test_throwInvalidException_whenOver32bitInteger_2147483648(): void
@@ -242,13 +242,13 @@ class DigitToWordAPITest extends TestCase
         // 3. Then
         $response->assertStatus(400);
         $response->assertJson(['error' => 'RuntimeException']);
-        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483647 ~ 2147483647. Given number: '.$digit]);
+        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit]);
     }
 
-    public function test_throwInvalidException_whenOver32bitInteger_negative_2147483648(): void
+    public function test_throwInvalidException_whenOver32bitInteger_negative_2147483649(): void
     {
         // 1. Given
-        $digit = '-2147483648';
+        $digit = '-2147483649';
 
         // 2. When
         $response = $this->get($this->getTestUrlWithDigit($digit));
@@ -256,7 +256,7 @@ class DigitToWordAPITest extends TestCase
         // 3. Then
         $response->assertStatus(400);
         $response->assertJson(['error' => 'RuntimeException']);
-        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483647 ~ 2147483647. Given number: '.$digit]);
+        $response->assertJson(['message' => 'Number is invalid. Number has to be -2147483648 ~ 2147483647. Given number: '.$digit]);
     }
 
     /**
