@@ -3,11 +3,68 @@
 Elmer's Manufacturing coding test project.
 I really want to be the Elmer's development team member!!^^
 
+<br>
+
 ## Environment
 | Environment | Supported versions |
 |-------------|--------------------|
 | PHP         | >= 8.0             |
 | Laravel     | >= 10              |
+
+<br>
+
+## Installation
+
+I apologize for the inconvenience, but I don't have experience with Docker containers yet(I am currently studying it by myself). 
+
+So I was unable to set up a Docker container environment. 
+
+However, I will provide you with a detailed installation guide.
+
+In order to start installation, your computer installed the PHP >= 8.0 version. 
+
+<br>
+
+**0.Composer Install to your Mac**
+
+In order to manage the dependency for the Laravel development environment, you have to install the Composer to your Mac.
+Please install the composer using [this link](https://getcomposer.org/download/).
+
+```bash
+$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+$ php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+$ php composer-setup.php
+$ php -r "unlink('composer-setup.php');"
+
+$ sudo mv composer.phar /usr/local/bin/composer
+```
+
+
+**1.Clone project**
+
+Clone my project to your local
+
+```bash
+$ git clone git@github.com:PositiveInsu/elmers-manufacturing.git elmer
+$ cd elmer
+```
+
+**2.Initialization project Config**
+
+Copy the .env.example file to .env
+
+```bash
+elmer$ cp .env.example .env 
+```
+
+**3.Download related modules**
+
+Download the project related modules using the Composer
+
+```bash
+elmer$ composer install 
+```
+<br>
 
 ## Part 1
 
@@ -34,11 +91,15 @@ If language is not yet implemented, the API will return English word as a defaul
 Each languges has own number word strategy. 
 So, you have to implement your own language strategy for changing the number.
 
+<br>
+
 **1. Adding the language file in the 'app/lang/' folder. Please see the 'app/lang/en/digitword.php'** 
 
 For example, if you want to add France language then create the folder and file like
 
 > app/lang/fr/digitword.php
+
+<br>
 
 **2. Creating the new word convert strategy class with 'extends AbstractDigitToWordConvertStrategy'.**
 
@@ -49,6 +110,8 @@ class DigitToWordFrenchConvertStrategy extends AbstractDigitToWordConvertStrateg
    //...
 }
 ```
+
+<br>
 
 **3. Implementing setLocale() method**
 
@@ -65,6 +128,8 @@ protected function setLocale(): void
     App::setLocale('fr');
 }
 ```
+
+<br>
 
 **4. Implementing convert() method**
 
@@ -86,5 +151,21 @@ public function convert(string $validatedDigitString): string
 
 > You can see the DigitToWordEnglishConvertStrategy.php class for example.
 
+<br>
 
 ## Part 2 
+
+Creating the RESTful API when the consumer give the Hexadecimal string, it returns Property Object Json.
+
+### - API Url Format
+
+> /api/public-function/hexadecimal-to-property/{hexadecimal}
+
+### - Hexadecimal String Difference between PHP and Java
+
+In the Java development(not only Java, many languages also), it defined the hexadecimal string like '0xFFFF'.
+But PHP handle the hexadecimal string like 'FFFF'.
+So in this project, I developed api so that both '0xFFFF' and 'FFFFFF' can be used.
+
+<br><br><br><br><br>
+
