@@ -24,11 +24,6 @@ class CommonFunction
         return gettype($data) === 'integer';
     }
 
-    public function isBooleanType(mixed $data): bool
-    {
-        return gettype($data) === 'boolean';
-    }
-
     public function changeFirstCharToUpperCase(string $value): string
     {
         $changedWord = '';

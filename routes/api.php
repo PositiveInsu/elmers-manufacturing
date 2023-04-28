@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'api'], function(){
-    Route::get('/public-function/digit-to-string/{locale}/{digit}', [PublicFunctionController::class, 'digitToString']);
+    Route::get('/public-function/digit-to-word/{locale}/{digit}', [PublicFunctionController::class, 'digitToWord']);
 });

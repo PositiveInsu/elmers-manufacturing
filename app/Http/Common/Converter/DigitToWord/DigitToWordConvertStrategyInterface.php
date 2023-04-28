@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Common\Converter\DigitToString;
+namespace App\Http\Common\Converter\DigitToWord;
 
-interface DigitToStringConvertStrategyInterface
+interface DigitToWordConvertStrategyInterface
 {
     /**
      * It always passed argument with validated 32bit digit string format in PHP
      * For example
      * '-2147483647' ~ '2147483647'
      *
-     * Have to implement for converting digit string to string
+     * Have to implement for converting digit string to word
      * For example
      * '0' return 'Zero'
      * '-1' return 'Negative one'

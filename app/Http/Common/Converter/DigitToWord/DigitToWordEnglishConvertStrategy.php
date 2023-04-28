@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Common\Converter\DigitToString;
+namespace App\Http\Common\Converter\DigitToWord;
 
 use App\Http\Common\CommonFunction;
 use Illuminate\Support\Facades\App;
 
-class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertStrategy
+class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrategy
 {
     private string $delimiter = ' ';
     /**
@@ -21,12 +21,14 @@ class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertSt
     public function convert(string $validatedDigitString): string
     {
         $negativeWord = $this->getNegativeWord($validatedDigitString);
-        $onlyNumberString = $this->getRemovedNavigateString($validatedDigitString);
-        $numberWord = $this->getNumberWord($onlyNumberString);
-        $resultNumberWord = $this->getCombinedWord($negativeWord, $numberWord);
-        $resultNumberWord = $this->addAndWordToLastHundredPart($resultNumberWord);
 
-        return CommonFunction::getInstance()->changeFirstCharToUpperCase($resultNumberWord);
+        $onlyNumberString = $this->getRemovedNavigateString($validatedDigitString);
+
+        $numberWord = $this->getNumberWord($onlyNumberString);
+
+        $resultWord = $this->getCombinedWord($negativeWord, $numberWord);
+
+        return $this->changeStyleAfterConvert($resultWord);
     }
 
     private function getNegativeWord(string $validatedDigitString): string
@@ -109,7 +111,7 @@ class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertSt
 
     private function getStringFromLabel(int $number): string
     {
-        return __('digitstrings.'.$number);
+        return __('digitword.'.$number);
     }
 
     private function getTensPlaceString(int $digit, int $quotient, int $remainder): string
@@ -155,5 +157,11 @@ class DigitToStringConvertEnglishStrategy extends AbstractDigitToStringConvertSt
         }
 
         return $hasHundredWord;
+    }
+
+    private function changeStyleAfterConvert(string $resultWord): string
+    {
+        $resultWord = $this->addAndWordToLastHundredPart($resultWord);
+        return CommonFunction::getInstance()->changeFirstCharToUpperCase($resultWord);
     }
 }

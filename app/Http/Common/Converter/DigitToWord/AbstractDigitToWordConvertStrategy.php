@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Common\Converter\DigitToString;
+namespace App\Http\Common\Converter\DigitToWord;
 
-abstract class AbstractDigitToStringConvertStrategy implements DigitToStringConvertStrategyInterface
+abstract class AbstractDigitToWordConvertStrategy implements DigitToWordConvertStrategyInterface
 {
     public function __construct()
     {

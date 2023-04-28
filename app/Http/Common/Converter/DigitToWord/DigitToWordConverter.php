@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Common\Converter\DigitToString;
+namespace App\Http\Common\Converter\DigitToWord;
 
 use App\Http\Common\CommonFunction;
+use App\Http\Enums\LanguageEnum;
 use RuntimeException;
 
 /**
- * Help converting Number to String like '10' to 'Ten'
- * It can also convert negative string like '-10'
+ * Help converting Number to Word like '10' to 'Ten'
+ * It can also convert negative word like '-10' to 'Negative Ten'
  *
  * In the PHP 32bit system, Maximum value is 2147483647 and Minimum value is -2147483647
  * please look at https://www.php.net/manual/en/language.types.integer.php
@@ -16,37 +17,53 @@ use RuntimeException;
  *
  * @author Insu Jo
  */
-class DigitToStringConverter
+class DigitToWordConverter
 {
     /**
      * Only accept 1 Hyphen(may, or may not) and 1-10 digit number string
      */
     const REGEX_DIGIT_AND_NEGATIVE = '/^(-{0,1})(\d{1,10})$/';
-    private digitToStringConvertStrategyInterface $digitToStringConvertStrategy;
+    private DigitToWordConvertStrategyInterface $digitToWordConvertStrategy;
 
-    public function __construct(string $language)
+    /**
+     * In the constructor, setting the converting strategy by language
+     * because depends on the Language, the convert strategies are different
+     *
+     * Default language is English
+     * You can see the support language at the LanguageEnum class
+     *
+     * @param string $language
+     */
+    public function __construct(string $language = LanguageEnum::ENGLISH->value)
     {
-        /**
-         * Depends on the Language, the convert ways are different
-         */
-        $this->digitToStringConvertStrategy = DigitToStringConvertStrategyFactory::getInstance($language)->getStrategy();
+        $this->digitToWordConvertStrategy = DigitToWordConvertStrategyFactory::getInstance()->getStrategy($language);
     }
 
     /**
      * Developer can use this class through Not only the Laravel DI but also getInstance method
      *
+     * Default language is English
+     * You can see the support language at the LanguageEnum class
+     *
      * @param string $language
-     * @return DigitToStringConverter
+     * @return DigitToWordConverter
      */
-    public static function getInstance(string $language): DigitToStringConverter
+    public static function getInstance(string $language = LanguageEnum::ENGLISH->value): DigitToWordConverter
     {
-        return new DigitToStringConverter($language);
+        return new DigitToWordConverter($language);
     }
 
+    /**
+     * Change the number to word depends on the language
+     *
+     * @param string|int $digit
+     * @return string
+     */
     public function convert(string|int $digit): string
     {
         $this->validate($digit);
-        return $this->digitToStringConvertStrategy->convert(strval($digit));
+        $digit = $this->validateNegativeZero($digit);
+        return $this->digitToWordConvertStrategy->convert(strval($digit));
     }
 
     private function validate(int|string $digit): void
@@ -98,6 +115,17 @@ class DigitToStringConverter
     private function is32BitInteger(int $digit): bool
     {
         return $digit >= -2147483647 && $digit <= 2147483647;
+    }
+
+    private function validateNegativeZero(int|string $digit): string
+    {
+        $result = $digit;
+
+        if ($this->isStringType($digit) && $digit === '-0') {
+            $result = '0';
+        }
+
+        return $result;
     }
 
 }
