@@ -13,15 +13,15 @@ class DigitToStringAPITest extends TestCase
     /**
      * DigitToString Function RESTful API url
      */
-    const URL_API_FUNCTION_DIGIT_TO_STRING = '/api/public-function/digit-to-string';
+    const URL_API_FUNCTION_DIGIT_TO_STRING = '/api/public-function/digit-to-string/';
 
     public function test_canCallAPI(): void
     {
         // 1. Given
-        $url = '';
+        $digit = 1;
 
         // 2. When
-        $response = $this->get($url);
+        $response = $this->get($this->getTestUrlWithDigit($digit));
 
         // 3. Then
         $response->assertStatus(200);
@@ -33,10 +33,11 @@ class DigitToStringAPITest extends TestCase
         $digit = 0;
 
         // 2. When
-        $result = '';
+        $response = $this->get($this->getTestUrlWithDigit($digit));
 
         // 3. Then
-        $this->assertEquals('zero', $result);
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'zero']);
     }
 
     public function test_canChangeDigitToString_whenTwoDigit(): void
@@ -104,5 +105,16 @@ class DigitToStringAPITest extends TestCase
         // 2. When
 
         // 3. Then
+    }
+
+    /**
+     * Get RESTFul API url with digit information
+     *
+     * @param int $digit
+     * @return string
+     */
+    private function getTestUrlWithDigit(int $digit): string
+    {
+        return $this::URL_API_FUNCTION_DIGIT_TO_STRING.$digit;
     }
 }
