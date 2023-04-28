@@ -1,7 +1,8 @@
 # Elmer's Manufacturing Coding Test
 
 Elmer's Manufacturing coding test project.
-I really want to be the Elmer's development team member!!^^
+
+I want to be the Elmer's Manufacturing development team member!!^^
 
 <br>
 
@@ -39,6 +40,7 @@ $ php -r "unlink('composer-setup.php');"
 $ sudo mv composer.phar /usr/local/bin/composer
 ```
 
+<br>
 
 **1.Clone project**
 
@@ -49,13 +51,17 @@ $ git clone git@github.com:PositiveInsu/elmers-manufacturing.git elmer
 $ cd elmer
 ```
 
-**2.Initialization project Config**
+<br>
+
+**2.Initialization project env file**
 
 Copy the .env.example file to .env
 
 ```bash
 elmer$ cp .env.example .env 
 ```
+
+<br>
 
 **3.Download related modules**
 
@@ -64,6 +70,37 @@ Download the project related modules using the Composer
 ```bash
 elmer$ composer install 
 ```
+<br>
+
+**4.Run the test**
+
+```bash
+elmer$ php artisan test 
+```
+
+<br>
+
+## Code location
+
+Test code location.
+> '/tests/Feature' folder.
+
+Routing code location.
+> '/routes/api.php'
+
+Controller code location.
+> '/app/Http/Controllers/Api/PublicFunctionController.php'
+
+Convert class location.
+> '/app/Http/Common/Converter/DigitToWord/'
+ 
+> '/app/Http/Common/Converter/HexadecimalToProperty/'
+
+Localization file location.
+> '/lang/en'
+
+> '/lang/kor'
+ 
 <br>
 
 ## Part 1
@@ -88,16 +125,16 @@ If language is not yet implemented, the API will return English word as a defaul
 
 ### - How to add the different Language word
 
-Each languges has own number word strategy. 
+Each language have own number word strategy. 
 So, you have to implement your own language strategy for changing the number.
 
 <br>
 
-**1. Adding the language file in the 'app/lang/' folder. Please see the 'app/lang/en/digitword.php'** 
+**1. Adding the language file in the '/lang/' folder. Please see the '/lang/en/digitword.php'** 
 
 For example, if you want to add France language then create the folder and file like
 
-> app/lang/fr/digitword.php
+> /lang/fr/digitword.php
 
 <br>
 
