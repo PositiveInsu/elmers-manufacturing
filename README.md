@@ -97,9 +97,9 @@ Convert class location.
 > '/app/Http/Common/Converter/HexadecimalToProperty/'
 
 Localization file location.
-> '/lang/en'
+> '/lang/en/digitword.php'
 
-> '/lang/kor'
+> '/lang/kor/digitword.php'
  
 <br>
 

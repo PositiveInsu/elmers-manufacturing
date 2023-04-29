@@ -85,14 +85,13 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
         $quotient = intval($digit / $numberUnit); // quotient can be float like 1.1, but we only need the integer value
         $remainder = $digit % $numberUnit;
 
-        if ($numberUnit === 10) {
+        if ($this->isTensPlace($numberUnit) ) {
             $resultString = $this->getTensPlaceString($digit, $quotient, $remainder);
         } else {
             $quotientString = $this->getQuotientString($quotient, $numberUnit);
             $remainderString = $this->changeNumberToWord($remainder, $index-1);
             $resultString = $this->getCombinedWord($quotientString, $remainderString);
         }
-
 
         return $resultString;
     }
@@ -118,6 +117,9 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
 
     private function getStringFromLabel(int $number): string
     {
+        /**
+         * Getting the English word from /lang/en/digitword.php
+         */
         return __('digitword.'.$number);
     }
 
@@ -180,5 +182,10 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
     private function hasOnlyFormerValue(string $former): bool
     {
         return strlen($former) >= 1;
+    }
+
+    private function isTensPlace(int $numberUnit): bool
+    {
+        return $numberUnit === 10;
     }
 }

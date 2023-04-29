@@ -8,7 +8,7 @@ use RuntimeException;
 
 /**
  * Help converting Number to Word like '10' to 'Ten'
- * It can also convert negative word like '-10' to 'Negative Ten'
+ * It can also convert negative word like '-10' to 'Negative ten'
  *
  * In the PHP 32bit system, Maximum value is 2147483647 and Minimum value is -2147483648
  * please look at https://www.php.net/manual/en/reserved.constants.php#:~:text=PHP_INT_MAX
