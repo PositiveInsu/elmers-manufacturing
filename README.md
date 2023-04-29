@@ -202,7 +202,7 @@ Creating the RESTful API when the consumer give the Hexadecimal string, it retur
 
 In the Java development(not only Java, many languages also), it defined the hexadecimal string like '0xFFFF'.
 But PHP handle the hexadecimal string like 'FFFF'.
-So in this project, I developed api so that both '0xFFFF' and 'FFFFFF' can be used.
+So in this project, I developed api so that both '0xFFFF' and 'FFFF' can be used.
 
 <br><br><br><br><br>
 
