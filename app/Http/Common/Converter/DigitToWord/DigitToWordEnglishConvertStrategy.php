@@ -148,10 +148,10 @@ class DigitToWordEnglishConvertStrategy extends AbstractDigitToWordConvertStrate
 
     private function addAndWordToLastHundredPart(string $resultNumberWord): string
     {
-        $index = strrpos($resultNumberWord, 'hundred', -1);
+        $index = strrpos($resultNumberWord, __('digitword.100'), -1);
 
         if ($this->hasHundredWord($index)) {
-            $resultNumberWord = substr_replace($resultNumberWord, 'hundred and', $index, 7);
+            $resultNumberWord = substr_replace($resultNumberWord, __('digitword.100').' '.__('digitword.and'), $index, 7);
         }
 
         return $resultNumberWord;
