@@ -43,7 +43,7 @@ class HexadecimalToPropertyConverter
     }
 
     /**
-     * Change the hexadecimal to property object Json string
+     * Change the hexadecimal to HexadecimalConverterPropertyDTO
      *
      * @param string $hexadecimal
      * @return HexadecimalConverterPropertyDTO
