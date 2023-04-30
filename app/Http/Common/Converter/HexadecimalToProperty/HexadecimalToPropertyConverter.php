@@ -55,13 +55,13 @@ class HexadecimalToPropertyConverter
         $decimal = hexdec($hexadecimalString);
 
         $propertyDTO = new HexadecimalConverterPropertyDTO();
-        $propertyDTO->setMachineOn($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::MACHINE_ON));
-        $propertyDTO->setGrindingBeans($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::GRINDING_BEANS));
-        $propertyDTO->setEmptyGroundsFault($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::EMPTY_GROUNDS_FAULT));
-        $propertyDTO->setWaterEmptyFault($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::WATER_EMPTY_FAULT));
-        $propertyDTO->setDescaleRequired($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::DESCALE_REQUIRED));
-        $propertyDTO->setNumberOfCupsToday($this->getNumberOfCupsFromDecimal($decimal));
-        $propertyDTO->setHaveAnotherOneCarl($this->hasOneOfHaveAnotherOnCarlValue($decimal));
+        $propertyDTO->setMachineOn($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::MACHINE_ON))
+        ->setGrindingBeans($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::GRINDING_BEANS))
+        ->setEmptyGroundsFault($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::EMPTY_GROUNDS_FAULT))
+        ->setWaterEmptyFault($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::WATER_EMPTY_FAULT))
+        ->setDescaleRequired($this->getValueFromDecimal($decimal, HexadecimalPropertyTargetEnum::DESCALE_REQUIRED))
+        ->setNumberOfCupsToday($this->getNumberOfCupsFromDecimal($decimal))
+        ->setHaveAnotherOneCarl($this->hasOneOfHaveAnotherOnCarlValue($decimal));
 
         return $propertyDTO;
     }
