@@ -106,6 +106,19 @@ class DigitToWordAPITest extends TestCase
         $response->assertJson(['data' => 'Five thousand two hundred and thirty seven']);
     }
 
+    public function test_canChangeDigitToWord_when_5_237(): void
+    {
+        // 1. Given
+        $digit = '5 237';
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Five thousand two hundred and thirty seven']);
+    }
+
     public function test_canChangeDigitToWord_when_125237(): void
     {
         // 1. Given
@@ -123,6 +136,19 @@ class DigitToWordAPITest extends TestCase
     {
         // 1. Given
         $digit = 2147483647;
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Two billion one hundred forty seven million four hundred eighty three thousand six hundred and forty seven']);
+    }
+
+    public function test_canChangeDigitToWord_when_2_147_483_647(): void
+    {
+        // 1. Given
+        $digit = '2 147 483 647';
 
         // 2. When
         $response = $this->get($this->getTestUrlWithDigit($digit));
@@ -162,6 +188,19 @@ class DigitToWordAPITest extends TestCase
     {
         // 1. Given
         $digit = -2147483648;
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(200);
+        $response->assertJson(['data' => 'Negative two billion one hundred forty seven million four hundred eighty three thousand six hundred and forty eight']);
+    }
+
+    public function test_canChangeDigitToWord_whenNegative_2_147_483_648(): void
+    {
+        // 1. Given
+        $digit = '-2 147 483 648';
 
         // 2. When
         $response = $this->get($this->getTestUrlWithDigit($digit));
@@ -250,6 +289,20 @@ class DigitToWordAPITest extends TestCase
     {
         // 1. Given
         $digit = '-2147483649';
+
+        // 2. When
+        $response = $this->get($this->getTestUrlWithDigit($digit));
+
+        // 3. Then
+        $response->assertStatus(400);
+        $response->assertJson(['error' => RuntimeException::class]);
+        $response->assertJson(['message' => __('messages.invalid_32bit_integer', ['attribute' => $digit])]);
+    }
+
+    public function test_throwInvalidException_whenOver32bitInteger_negative_2_147_483_649(): void
+    {
+        // 1. Given
+        $digit = '-2_147_483_649';
 
         // 2. When
         $response = $this->get($this->getTestUrlWithDigit($digit));

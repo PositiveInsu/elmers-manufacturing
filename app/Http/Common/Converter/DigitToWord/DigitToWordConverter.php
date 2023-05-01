@@ -61,9 +61,21 @@ class DigitToWordConverter
      */
     public function convert(string|int $digit): string
     {
+        $digit = $this->cleanUpDigitString($digit);
+
         $this->validate($digit);
-        $digit = $this->validateNegativeZero($digit);
+
         return $this->digitToWordConvertStrategy->convert(strval($digit));
+    }
+
+    private function cleanUpDigitString(int|string $digit): int|string
+    {
+        if ($this->isStringType($digit)) {
+            $digit = str_replace(' ', '', $digit);
+            $digit = $digit === '-0' ? '0' : $digit;
+        }
+
+        return $digit;
     }
 
     private function validate(int|string $digit): void
@@ -99,10 +111,10 @@ class DigitToWordConverter
     private function isValidateString(string $digit): bool
     {
         $isValidate = false;
-        $noWhiteSpaceDigitString = str_replace(' ', '', $digit);
 
-        if ($this->isPassRegExValidate($noWhiteSpaceDigitString) && $this->is32BitInteger(intval($noWhiteSpaceDigitString)))
+        if ($this->isPassRegExValidate($digit) && $this->is32BitInteger(intval($digit))) {
             $isValidate = true;
+        }
 
         return $isValidate;
     }
@@ -116,16 +128,4 @@ class DigitToWordConverter
     {
         return $digit >= -2147483648 && $digit <= 2147483647;
     }
-
-    private function validateNegativeZero(int|string $digit): int|string
-    {
-        $result = $digit;
-
-        if ($this->isStringType($digit) && $digit === '-0') {
-            $result = '0';
-        }
-
-        return $result;
-    }
-
 }
